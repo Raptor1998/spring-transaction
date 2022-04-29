@@ -11,4 +11,10 @@ public interface UserService {
 
     void insert() throws SQLException;
 
+    void insertChild() throws SQLException;
+
+    void insertParent() throws SQLException;
+
+    void insertParentAndChild() throws SQLException;
+
 }

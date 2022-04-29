@@ -123,7 +123,7 @@ public void execute(String sql) throws SQLException {
 }
 ```
 
-## 通过aop实现一个简单的事务
+## 通过aop实现一个简单的事务回滚
 
 ```java
 @Autowired
@@ -149,4 +149,52 @@ public Object doTransaction(ProceedingJoinPoint proceedingJoinPoint) throws Thro
     return null;
 }
 ```
+
+## 事务传播行为
+
+### Propagation.REQUIRED（默认）
+
+**如果当前没有事务，就新建一个事务，如果已经存在一个事务中，加入到这个事务中。**
+
+  1. 父方法和子方法都开启事务，异常发生让子事务回滚，父事务一定回滚(子事务没将父事务挂起的情况下)，不管是否被try-catch包裹。
+  2. 只要try-catch在内层，@Transactional在外层，异常被try-catch住，事务就不会回滚。
+    3. 但是如果@Transactional在内层，try-catch在外层，那try-catch还没来得及处理异常就在@Transactional注解作用下回滚了
+
+### Propagation.SUPPORTS
+
+**如果当前有事务，则使用事务，如果当前没有事务，就以非事务方式执行**
+
+### Propagation.MANDATORY
+
+**支持当前的事务，如果当前没有事务，就抛出异常。**
+
+### Propagation.REQUIRES_NEW
+
+**新建事务，如果当前存在事务，把当前事务挂起。**
+
+### Propagation.NOT_SUPPORTED
+
+**以非事务方式执行操作，如果当前存在事务，就把当前事务挂起**
+
+### Propagation.NEVER
+
+**以非事务方式执行，如果当前存在事务，则抛出异常。与`Propagation.MANDATORY`正好相反。**
+
+### Propagation.NESTED
+
+**如果当前有事务，则开启子事务（嵌套事务），嵌套事务是独立提交或者回滚，如果当前没有事务，就新建事务运行。**
+
+**运行结果和原因与`Propagation.REQUIRED`一模一样。几乎没区别，这种情况用得少。**
+
+## 如何让下一个方法获取当前是否已经存在事务
+
+当事务开启之后，将值设置为true，此时便可以获取当前是否存在事务
+
+```java
+ThreadLocal<Boolean> hasTransaction = new ThreadLocal();
+```
+
+## reference
+
+[事务的7种传播行为](https://blog.csdn.net/qq_34115899/article/details/115602002)
 

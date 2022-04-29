@@ -11,7 +11,7 @@ import java.sql.SQLException;
  * @description Main
  * @date 2022/4/28 9:58
  */
-public class Application {
+public class ApplicationRollback {
 
 
     public static void main(String[] args) throws SQLException {
