@@ -1,6 +1,6 @@
 # Transaction
 
-![img.png](E:\codeDemo\spring-transaction\README.assets\img.png)
+![img.png](.\README.assets\img.png)
 
 ## 什么是事务
 
