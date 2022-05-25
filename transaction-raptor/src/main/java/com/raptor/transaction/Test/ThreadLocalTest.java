@@ -29,5 +29,7 @@ public class ThreadLocalTest {
 
         System.out.println("master");
 
+        System.out.println("dev");
+
     }
 }
